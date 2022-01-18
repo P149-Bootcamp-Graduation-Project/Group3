@@ -4,7 +4,7 @@ const { json } = require("express/lib/response");
 const { Kafka } = require("kafkajs");
 const kafka = new Kafka({
   clientId: "group2-kafka_logs",
-  brokers: ["88.198.26.82:9092"],  //["kafka:9092"],
+  brokers: ["kafka:9092"],  //["kafka:9092"],  server IP :"88.198.26.82:9092"
 });
 
 const producer = kafka.producer();

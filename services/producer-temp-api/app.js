@@ -52,5 +52,5 @@ let options = {
 //module.exports = expressSwagger(options);
 
 app.listen(process.env.APP_PORT, () => 
-    console.log(`Server listening on docker container --> ${process.env.APP_PORT}`));
+    console.log(`Producer temp API Server listening on docker container --> ${process.env.APP_PORT} \n`));
 

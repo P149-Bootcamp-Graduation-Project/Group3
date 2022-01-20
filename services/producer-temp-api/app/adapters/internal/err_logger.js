@@ -30,6 +30,23 @@ const req = http.request(options, function (res) {
   });
 });
 
+/* example obj...
+const errData = {
+  flag_type: 1,
+  req_src: "producer-temp-api",
+  req_path: "/temperature",
+  req_file: "kafkajs_test.js",
+  req_line: 18,
+  req_func: "createProducer",
+  req_type: "Controller",
+  req_raw: data,
+  content_err: error,
+  is_solved: 0,
+  is_notified: 0,
+  is_assgined: "name",
+};
+*/
+
 function errToPostLogApi(postData) {
   req.write(JSON.stringify(postData));
   req.end();

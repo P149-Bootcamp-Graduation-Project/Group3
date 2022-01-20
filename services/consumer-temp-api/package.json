@@ -1,0 +1,32 @@
+{
+  "name": "inavitas-skelton",
+  "version": "1.0.0",
+  "description": "Inavitas Bootcamp Micro Service Skelton",
+  "main": "app.js",
+  "scripts": {
+    "start": "nodemon app.js",
+    "dev": "supervisor node app.js"
+  },
+  "author": "Inavitas",
+  "license": "MIT",
+  "dependencies": {
+    "axios": "^0.24.0",
+    "dotenv": "^10.0.0",
+    "express": "^4.17.2",
+    "express-swagger-generator": "^1.1.17",
+    "jsonwebtoken": "^8.5.1",
+    "kafka-node": "^5.0.0",
+    "kafkajs": "^1.15.0",
+    "mongodb": "^4.2.2",
+    "morgan": "^1.10.0",
+    "pg": "^8.7.1",
+    "redis": "^4.0.1",
+    "snappy": "^7.1.1",
+    "swagger-jsdoc": "^6.1.0",
+    "swagger-ui-express": "^4.3.0",
+    "zookeeper": "^5.3.0"
+  },
+  "devDependencies": {
+    "supervisor": "^0.12.0"
+  }
+}

@@ -40,7 +40,7 @@ const errData = {
   req_func: "createProducer",
   req_type: "Controller",
   req_raw: data,
-  content_err: error,
+  content_err: error.message,
   is_solved: 0,
   is_notified: 0,
   is_assgined: "name",

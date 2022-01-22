@@ -15,14 +15,6 @@ app.use(express.json());
 
 app.use(router);
 
-(async () => {
-  // listLen = await rd_client.LLEN("temperature-group2");
-  // console.log("temperature list lenght :", listLen);
-  // await rd_client.LTRIM("temperature-group2", 0, listLen);
-  await rd_client.flushAll("ASYNC");
-  console.log("Redis db  delete all, all list keys start 0. index ...\n");
-})();
-
 // app.use("/docs", swagger.Swag_serve, swagger.Swag_setup);
 
 let options = {

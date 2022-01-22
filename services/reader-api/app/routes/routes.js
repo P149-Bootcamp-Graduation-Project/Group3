@@ -1,14 +1,23 @@
 const { route } = require("express/lib/application");
 
-const { fakeTempGet, fakeTempPost } = require("../controllers/fake-temperature/fake_temperature");
-const { fakePowerGet, fakePowerPost } = require("../controllers/fake-power/fake_power");
-const { fakeAirGet, fakeAirPost } = require("../controllers/fake-air/fake_air");
+ const { usersRegisterGet, usersRegisterPost, usersRegisterDelete, usersRegisterPatch } = require("../controllers/users-register/users-register");
+ const { usersLoginGet, usersLoginPost } = require("../controllers/users-login/users-login");
+ const {usersLogoutGet,usersLogoutPost,}=require("../controllers/users-logout/users-logout");
+ const {usersResetPswGet, usersResetPswPost}=require("../controllers/users-resetpsw/users-resetpsw");
 
 const router = express.Router();
 
-router.route("/temperature").get(fakeTempGet).post(fakeTempPost);
-router.route("/electricity").get(fakePowerGet).post(fakePowerPost);
-router.route("/air").get(fakeAirGet).post(fakeAirPost);
+router.route("/users/register")
+  .get(usersRegisterGet)
+  .post(usersRegisterPost)
+  .delete(usersRegisterDelete)
+  .patch(usersRegisterPatch);
+  
+router.route("/users/login").get(usersLoginGet).post(usersLoginPost);
+router.route("/users/logout").get(usersLogoutGet).post(usersLogoutPost);
+router.route("/users/resetpsw").get(usersResetPswGet).post(usersResetPswPost);
+
+
 
 module.exports = {
   router,

@@ -31,7 +31,7 @@ const fakeTempPost = async (req, res) => {
 
   let queryToDo ="insert into group2.log_temperature (school_id,  class_id, sensor_id, sensor_data, read_at)" + 
                   "values($1, $2, $3, $4, $5)";
-  pg_client.query(queryToDo, obj_to_arr )
+  await pg_client.query(queryToDo, obj_to_arr )
     .then((result) => {
       console.log("Temperature log data is send postgreSql :", result);
     })

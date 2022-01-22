@@ -4,6 +4,7 @@
 
 - /users/register
 - /users/login
+- /users/logout
 - /users/resetpsw
 <br><br>
 - /schools

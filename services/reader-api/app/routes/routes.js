@@ -1,4 +1,5 @@
 const { route } = require("express/lib/application");
+const { verifyRefreshToken } = require("../middleware/authentication");
 
  const { usersRegisterGet, usersRegisterPost, usersRegisterDelete, usersRegisterPatch } = require("../controllers/users-register/users-register");
  const { usersLoginGet, usersLoginPost } = require("../controllers/users-login/users-login");
@@ -14,7 +15,11 @@ router.route("/users/register")
   .patch(usersRegisterPatch);
   
 router.route("/users/login").get(usersLoginGet).post(usersLoginPost);
-router.route("/users/logout").get(usersLogoutGet).post(usersLogoutPost);
+
+router.route("/users/logout")
+    .get(usersLogoutGet)
+    .post(verifyRefreshToken, usersLogoutPost);
+
 router.route("/users/resetpsw").get(usersResetPswGet).post(usersResetPswPost);
 
 

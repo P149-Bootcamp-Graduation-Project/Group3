@@ -6,13 +6,13 @@
 </p>
 
 ### Project Group Members
-- İlyas YAĞCIOĞLU   (producer)
+- İlyas YAĞCIOĞLU   (Producer, Reader )
 - Emre DEMİR 
-- Oğuzhan EYERCİ (consumer)
+- Oğuzhan EYERCİ (Consumer, Error Logger)
 - Emre SOLMAZ   (Error Logger)
-- Atakan DÖNMEZ (consumer)
+- Atakan DÖNMEZ (Consumer)
 - Muhammed Fatih CEYLAN 
-- Derya ÜNVER (-)
+- Derya ÜNVER ()
 
 ### ENV :
 ```bash

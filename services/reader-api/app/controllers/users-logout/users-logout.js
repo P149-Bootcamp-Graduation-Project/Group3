@@ -23,21 +23,19 @@ const usersLogoutPost = async (req, res) => {
           await rd_client.DEL(userId.toString())
             .then((res_del) => {
               console.log("res_del :",res_del);
-              // res.sendStatus(204).send({message: 'User logout'});
               res.send({message: 'User logout'});
               res.end();
             })
             .catch((err) => {
               console.log(err.message);
-              // res.sendStatus(403).send("user not found");
-              // res.end();
+
             });
         }
       })
       .catch((err) => {
         console.log(err);
          res.send("user not found");
-        // res.end();
+         res.end();
       });
 
   } catch (error) {

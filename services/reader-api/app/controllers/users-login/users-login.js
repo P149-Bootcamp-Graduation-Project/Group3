@@ -18,12 +18,8 @@ const usersLoginPost = async (req, res) => {
 
   console.log("incomig post data :", incoming_obj);
 
-  let queryToDo =
-    "select  group2.users.id, group2.users.email, group2.users.user_pass from group2.users where user_pass='" +
-    incoming_obj.user_pass +
-    "' and email='" +
-    incoming_obj.email +
-    "'";
+  let queryToDo = "select  group2.users.id, group2.users.email, group2.users.user_pass from group2.users where user_pass='" +
+    incoming_obj.user_pass +"' and email='" + incoming_obj.email +"'";
 
   await pg_client
     .query(queryToDo)

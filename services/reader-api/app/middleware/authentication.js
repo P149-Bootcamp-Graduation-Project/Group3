@@ -7,8 +7,8 @@ const {
 //   return jwt.sign(data, process.env.TOKEN_SECRET, { expiresIn: '1h' });
 // }
 
-function signAccessToken(userId) {
-    const payload = {};
+function signAccessToken(userId,obj_data) {
+    const payload = obj_data;
     const secret = process.env.TOKEN_SECRET;
     const options = {
         expiresIn: "1h",
@@ -19,8 +19,8 @@ function signAccessToken(userId) {
     return token;
 }
 
-async function signRefreshToken(userId) {
-    const payload = {};
+async function signRefreshToken(userId, obj_data) {
+    const payload = obj_data;
     const secret = process.env.TOKEN_SECRET;
     const options = {
         expiresIn: "1h",
@@ -57,7 +57,7 @@ function verifyAccessToken(req, res, next) {
             const message = err.name === "JsonWebTokenError" ? "Unauthorized" : err.message;
             return next(createError.Unauthorized(message));
         }
-        req.payload = payload;
+        req.payload= payload;  // token data to body
         next();
     });
 }
@@ -65,21 +65,27 @@ function verifyAccessToken(req, res, next) {
 function verifyRefreshToken(req, res, next) {
 
     const { refreshToken } = req.body;
+
     console.log(refreshToken);
 
-    if (!refreshToken) throw createError.BadRequest(); 
+    if (!refreshToken){
+       return  res.send({message:"user token not found ..."});
+        
+    } 
 
     jwt.verify(refreshToken, process.env.TOKEN_SECRET, async (err, payload) => {
         let userId;
 
         if (err){
-            res.send({message:"user token not found ..."});
+            res.satatus(403).send({message:"user token not found ..."}); //forbidden
             res.end();
+         
         } 
         else {
             userId = payload.aud;
             console.log("aud :", userId);
 
+            req.payload=payload;
             req.userId=userId;
             next();
 

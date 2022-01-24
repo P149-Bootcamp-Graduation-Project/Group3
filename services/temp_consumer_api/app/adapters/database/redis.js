@@ -1,21 +1,10 @@
-const redis = require('redis');
 const { createClient } = require('redis');
 const errorCatch = require("../../middleware/errorMiddleware");
 const dotenv = require('dotenv')
 dotenv.config({ path: '../../../.env' })
-
-// const port=process.env.REDIS_PORT
-// const host=process.env.REDIS_HOST
-// const password=process.env.REDIS_PASS
-// console.log("bilgiler: ",port,host,password)
-// const url = `redis://${host}:${port}`;
-
-// rd_client = createClient({
-//     url,
-//     password
-// })
-
-rd_client = createClient()
+const url = `redis://:${process.env.REDIS_PASS}@${process.env.REDIS_HOST}:${process.env.REDIS_PORT}/${process.env.REDIS_INDEX}`
+console.log(url)
+rd_client = createClient({ url: url})
 
 rd_client.on('connect', () => {
     console.log('::> Redis Server is Ready')
@@ -24,10 +13,10 @@ rd_client.on('connect', () => {
 rd_client.on('error', (err) => {
     const errData = {
         flag_type: 1,
-        req_src: "consumer-power-api",
+        req_src: "consumer-air-api",
         req_path: "/",
         req_file: "redis.js",
-        req_line: 24,
+        req_line: 14,
         req_func: "redis",
         req_type: "Database",
         content_message: err.message,

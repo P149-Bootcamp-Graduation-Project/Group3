@@ -1,7 +1,7 @@
 const express = require('express')
 const router = express.Router()
-const { addLog } = require("../controllers/errorLogController")
+const { addLog,getLogs } = require("../controllers/errorLogController")
 
-router.route('/').post(addLog)
+router.route('/').post(addLog).get(getLogs)
 
 module.exports = router

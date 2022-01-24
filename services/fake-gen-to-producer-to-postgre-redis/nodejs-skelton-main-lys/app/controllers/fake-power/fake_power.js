@@ -36,7 +36,8 @@ const fakePowerGet = (req, res) => {
       });
 
 
-    await rd_client.LPUSH('power-group2',JSON.stringify(db_obj)).then((res)=>{
+    await rd_client.LPUSH('power-group2',JSON.stringify(db_obj))
+    .then((res)=>{
       console.log('power redis result:',res);
     }).catch((err)=>{
       console.log('power redis error: ',err);

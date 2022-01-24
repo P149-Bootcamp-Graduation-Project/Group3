@@ -9,6 +9,7 @@
 
 <br><br>
 - /schools
+- /classes
 - /sensors
 <br><br>
 - /temperature

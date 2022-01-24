@@ -12,7 +12,6 @@ const errorCatch = async (err,req,res,next) =>{
         },
         data : data
     }
-    console.log("111")
     await axios(config)
         .then(function (response) {
             console.log(JSON.stringify(response.data));

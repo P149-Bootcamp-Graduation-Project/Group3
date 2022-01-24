@@ -7,7 +7,7 @@ const {
 //   return jwt.sign(data, process.env.TOKEN_SECRET, { expiresIn: '1h' });
 // }
 
-function signAccessToken(userId,obj_data) {
+function signAccessToken(userId, obj_data) {
     const payload = obj_data;
     const secret = process.env.TOKEN_SECRET;
     const options = {
@@ -77,7 +77,7 @@ function verifyRefreshToken(req, res, next) {
         let userId;
 
         if (err){
-            res.satatus(403).send({message:"user token not found ..."}); //forbidden
+            res.status(403).send({message:"user token not found ..."}); //forbidden
             res.end();
          
         } 

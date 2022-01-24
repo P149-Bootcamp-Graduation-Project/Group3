@@ -27,8 +27,8 @@ const usersLoginPost = async (req, res) => {
       console.log("/users/login data is send postgreSql :", result.rows[0].id);
 
       if (result.rowCount === 1) {
-        const accessToken = await signAccessToken(result.rows[0].id);
-        const refreshToken = await signRefreshToken(result.rows[0].id);
+        const accessToken = await signAccessToken(result.rows[0].id, incoming_obj);
+        const refreshToken = await signRefreshToken(result.rows[0].id, incoming_obj);
         res.status(200).send({ accessToken, refreshToken });
       }
     })

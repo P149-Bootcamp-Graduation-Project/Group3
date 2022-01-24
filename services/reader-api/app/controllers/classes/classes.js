@@ -2,9 +2,9 @@ const { pg_client } = require("../../adapters/database/postgresql");
 const { rd_client } = require("../../adapters/database/redis");
 
 
-const schoolsGet = async (req, res) => {
+const classesGet = async (req, res) => {
 
-  // the token is if  find in redis token list  then gets all schools.
+  // the token is if  find in redis token list  then gets all classes.
   // If the token is invalid, the middleware terminates the request.
 
   const { refreshToken } = req.body;
@@ -16,11 +16,11 @@ const schoolsGet = async (req, res) => {
       console.log(redis_res);
 
       let rd_token = JSON.parse(redis_res);
-      // the token is if  find in redis token list  then gets all schools.
+      // the token is if  find in redis token list  then gets all classes.
       if (rd_token.token != null && rd_token.token == refreshToken) {
         //console.log("redis res :", rd_token.token, refreshToken);
 
-        let queryToDo = "select  school_name, detail, city_id, total_class, create_at, created_by, is_active from group2.schools where true";
+        let queryToDo = "select  school_id, floor_num, class_name, detail, city_id, created_by, is_active from group2.classes where true";
         pg_client.query(queryToDo).then((pg_res) => {
           res.status(200).send(pg_res.rows);
           res.end();
@@ -37,17 +37,18 @@ const schoolsGet = async (req, res) => {
 
 /*
 {
-  "school_name": "Okul Okulu",
-    "detail": "İlkokul",
-    "city_id": 26,
-    "total_class": 10,
-    "created_by": 1,
-    "is_active": 1,
+  school_id: 1,
+  floor_num: 2,
+  class_name: "11A",
+  detail: "Sayısal",
+  city_id: 26,
+  created_by: 1,
+  is_active: 1,
 }
 
 */
 
-const schoolsPost = async (req, res) => {
+const classesPost = async (req, res) => {
   // the token is if  find in redis token list  then inser user to db .
   // If the token is invalid, the middleware terminates the request.
   const incoming_obj = req.body; //  user data for insert
@@ -55,10 +56,11 @@ const schoolsPost = async (req, res) => {
   let userId = req.userId;  // userId data is from token
 
   const db_obj = {
-    school_name: incoming_obj.school_name,
+    school_id: incoming_obj.school_id,
+    floor_num: incoming_obj.floor_num,
+    class_name: incoming_obj.class_name,
     detail: incoming_obj.detail,
     city_id: incoming_obj.city_id,
-    total_class: incoming_obj.total_class,
     created_by: incoming_obj.created_by,
     is_active: incoming_obj.is_active,
   };
@@ -75,18 +77,18 @@ const schoolsPost = async (req, res) => {
     let rd_token = JSON.parse(rd_res);
     // the token is if  find in redis token list  then delete user.
     if (rd_token.token != null && rd_token.token == refreshToken) {
-      let queryToDo = "insert into group2.schools (school_name, detail, city_id, total_class, created_by, is_active)" +
-        "values($1, $2, $3, $4, $5, $6) RETURNING id";
+      let queryToDo = "insert into group2.classes (school_id, floor_num, class_name, detail, city_id, created_by, is_active)" +
+        "values($1, $2, $3, $4, $5, $6, $7) RETURNING id";
       await pg_client.query(queryToDo, obj_to_arr)
         .then(async (result) => {
-          console.log("/schools data is send postgreSql :");
+          console.log("/class data is send postgreSql :");
           if (result.rowCount === 1) {
 
-            res.status(200).send({ message: "School data is insert DB." });
+            res.status(200).send({ message: "class data is insert DB." });
           }
         })
         .catch((err) => {
-          console.log("/schools data is pqSQL send error : ", err);
+          console.log("/class data is pqSQL send error : ", err);
           res.status(500).send(err);
         });
     }
@@ -94,7 +96,7 @@ const schoolsPost = async (req, res) => {
 
 };
 
-const schoolsDelete = async (req, res) => {
+const classesDelete = async (req, res) => {
   // the token is if  find in redis token list  then delete school.
   // If the token is invalid, the middleware terminates the request.
   const incoming_obj = req.body; // delete user data
@@ -108,12 +110,13 @@ const schoolsDelete = async (req, res) => {
     // the token is if  find in redis token list  then delete school.
     if (rd_token.token != null && rd_token.token == refreshToken) {
 
-      let queryToDo = "delete from group2.schools where school_name='" + incoming_obj.school_name + "'";
+      let queryToDo = "delete from group2.classes where class_name='" + incoming_obj.school_name + "'"+
+                        "school_id='"+incoming_obj.school_id+"'";
       await pg_client.query(queryToDo).then((res_del)=>{
         if(res_del.rowCount>=1){
-          res.status(200).send("school is delete ...");
+          res.status(200).send("class is delete ...");
         }else {
-              res.status(500).send("school is not delete:" + res_delete.rowCount);
+              res.status(500).send("class is not delete:" + res_delete.rowCount);
             }
       });
     }//if
@@ -123,8 +126,8 @@ const schoolsDelete = async (req, res) => {
 };
 
 
-const schoolsPatch = async (req, res) => {
-  // the token is if  find in redis token list  then update school.
+const classesPatch = async (req, res) => {
+  // the token is if  find in redis token list  then update class.
   // If the token is invalid, the middleware terminates the request.
   const incoming_obj = req.body;  // update user data
   const { refreshToken } = req.body;
@@ -144,19 +147,19 @@ const schoolsPatch = async (req, res) => {
     console.log(rd_res);
 
     let rd_token = JSON.parse(rd_res);
-    // the token is if  find in redis token list  then update user.
+    // the token is if  find in redis token list  then update class.
     if (rd_token.token != null && rd_token.token == refreshToken) {
-      let queryToDo ="update group2.schools set school_name=$1, detail=$2, total_class=$3, created_by=$4," +
-        " is_active=$5 where school_name='" +incoming_obj.school_name+ "'";
+      let queryToDo ="update group2.classes set school_id=$1, floor_num=$2, class_name=$3, detail=$4," +
+        " city_id=$5, created_by=$6, is_active=$7 where school_name='" +incoming_obj.school_name+ "'";
 
       await pg_client
         .query(queryToDo, obj_to_arr)
         .then((result) => {
           console.log("update :", result);
-          res.status(200).send({message:"school is update ..."});
+          res.status(200).send({message:"class is update ..."});
         })
         .catch((err) => {
-          res.status(500).send("school is not update:" + err);
+          res.status(500).send("class is not update:" + err);
         });
     }
   });
@@ -165,8 +168,8 @@ const schoolsPatch = async (req, res) => {
 };
 
 module.exports = {
-  schoolsGet,
-  schoolsPost,
-  schoolsDelete,
-  schoolsPatch,
+  classesGet,
+  classesPost,
+  classesDelete,
+  classesPatch,
 };

@@ -3,7 +3,7 @@ const kafka = require('kafka-node')
 const { pg_client } = require("../database/postgresql")
 const Consumer = kafka.Consumer
 const Offset = kafka.Offset
-const client = new kafka.KafkaClient({kafkaHost: '127.0.0.1:9092'})
+const client = new kafka.KafkaClient({clientId: "group2-kafka_logs",kafkaHost: '127.0.0.1:9092'})
 const { rd_client }  = require('../database/redis')
 
 const consumer = new Consumer(
@@ -25,12 +25,15 @@ exports.consumerOn = async () => {
         console.log(message)
         const deger = JSON.parse(message.value)
         console.log(deger)
+        console.log(deger.id,deger.sensor_data,deger.time_stamp)
         //okul ve sınıf id daha güzel bir şekilde eklenecek.
         await pg_client.query(`insert into log_temperature(school_id,class_id,sensor_id,sensor_data,read_at) 
-                        values((select school_id from sensors where id=${Number(deger.id)}),(select class_id from sensors where id=${Number(deger.id)}), ${Number(deger.id)} ,${Number(deger.sensor_data)} ,to_timestamp(${Number(deger.timestamp)} / 1000.0) ) 
+                        values((select school_id from sensors where id=${Number(deger.id)}),(select class_id from sensors where id=${Number(deger.id)}), ${Number(deger.id)} ,${Number(deger.sensor_data)} ,to_timestamp(${Number(deger.time_stamp)} / 1000.0) ) 
                         RETURNING id,school_id,class_id,sensor_id,sensor_data,read_at,created_at`)
             .then((result)=>{
-                rd_client.set(`group2_temp_${result.rows[0].id}`,JSON.stringify(result.rows[0])).then((message)=>{
+                // rd_client.set(`group2_temp_${result.rows[0].id}`,JSON.stringify(result.rows[0]))
+                rd_client.LPUSH("temperature-group2", JSON.stringify(db_obj)) 
+                .then((message)=>{
                     console.log("keys: ",message)
                 }).catch((err)=>{
                     const errData = {

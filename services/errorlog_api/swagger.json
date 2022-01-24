@@ -1,0 +1,82 @@
+{
+  "swagger": "2.0",
+  "info": {
+    "version": "1.0.0",
+    "title": "Error Log API",
+    "description": "inavitas nodejs bootcamp bitirme projesi"
+  },
+  "tags": [
+    {
+      "name": "Error Log",
+      "description": "API for Logging Errors"
+    }
+  ],
+  "consumes": [
+    "application/json"
+  ],
+  "produces": [
+    "application/json"
+  ],
+  "paths": {
+    "/errlogs": {
+      "get": {
+        "tags": [
+          "Error Log"
+        ],
+        "summary": "Get Error Logs",
+        "responses": {
+          "200": {
+            "description": "OK"
+          }
+        }
+      },
+      "post": {
+        "tags": [
+          "Error Log"
+        ],
+        "summary": "Post Error Logs",
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "name": "Error",
+            "in": "body",
+            "description": "Error Details",
+            "required": true,
+            "schema": {
+             "type": "object",
+              "properties": {
+                "content_message": {
+                  "type": "string"
+                },
+                "req_line": {
+                  "type": "integer"
+                },
+                "req_file": {
+                  "type": "string"
+                },
+                "req_src": {
+                  "type": "string"
+                },
+                "req_path": {
+                  "type": "string"
+                }
+
+              }
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK"
+          },
+          "400": {
+            "description": "Failed. Bad post data."
+          }
+        }
+      }
+    }
+  }
+
+}

@@ -38,7 +38,8 @@ const fakeAirGet = (req, res) => {
       });
 
 
-    await rd_client.LPUSH('air-group2',JSON.stringify(db_obj)).then((res)=>{
+    await rd_client.LPUSH('air-group2',JSON.stringify(db_obj))
+    .then((res)=>{
       console.log('air redis result:',res);
     }).catch((err)=>{
       console.log('air redis error: ',err);

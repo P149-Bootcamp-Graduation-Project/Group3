@@ -7,7 +7,13 @@ const { verifyRefreshToken } = require("../middleware/authentication");
  const {usersLogoutGet,usersLogoutPost,}=require("../controllers/users-logout/users-logout");
  const {usersResetPswGet, usersResetPswPost}=require("../controllers/users-resetpsw/users-resetpsw");
 
- const {schoolsGet, schoolsPost}=require("../controllers/schools/schools");
+ const {schoolsGet, schoolsPost, schoolsDelete, schoolsPatch}=require("../controllers/schools/schools");
+ const {classesGet, classesPost, classesDelete, classesPatch}=require("../controllers/classes/classes");
+ const {sensorsGet, sensorsPost, sensorsDelete, sensorsPatch}=require("../controllers/sensors/sensors");
+ const {temperatureGet}=require("../controllers/temperature/temperature");
+ const {airGet}=require("../controllers/air/air");
+ const {powerGet}=require("../controllers/electricity/electricity");
+ const {errlogGet}=require("../controllers/errlog/errlog");
 
 const router = express.Router();
 
@@ -28,13 +34,29 @@ router.route("/users/logout")
 
 router.route("/users/resetpsw").get(usersResetPswGet).post(usersResetPswPost);
 
-/*schools routes */
-
 router.route("/schools")
     .get(verifyRefreshToken,schoolsGet)
-    .post(schoolsPost);
+    .post(verifyRefreshToken, schoolsPost)
+    .delete(verifyRefreshToken, schoolsDelete)
+    .patch(verifyRefreshToken, schoolsPatch);
 
+router.route("/classes")
+    .get(verifyRefreshToken, classesGet)
+    .post(verifyRefreshToken, classesPost)
+    .delete(verifyRefreshToken, classesDelete)
+    .patch(verifyRefreshToken, classesPatch);
 
+router.route("/sensors")
+    .get(verifyRefreshToken,sensorsGet)
+    .post(verifyRefreshToken, sensorsPost)
+    .delete(verifyRefreshToken, sensorsDelete)
+    .patch(verifyRefreshToken, sensorsPatch);
+
+router.route("/temperature").get(verifyRefreshToken,temperatureGet);
+router.route("/airquality").get(verifyRefreshToken,airGet);
+router.route("/electricity").get(verifyRefreshToken,powerGet);
+
+router.route("/errlog").get(verifyRefreshToken,errlogGet);
 
 
 module.exports = {

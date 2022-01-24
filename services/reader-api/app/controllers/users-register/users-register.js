@@ -82,10 +82,8 @@ const usersRegisterPost = async (req, res) => {
       });
       res.end();
     } else {
-      let queryToDo =
-        "insert into group2.users (user_title, user_name, user_pass, email, phone, is_active)" + "values($1, $2, $3, $4, $5, $6) RETURNING id";
-      await pg_client
-        .query(queryToDo, obj_to_arr)
+      let queryToDo ="insert into group2.users (user_title, user_name, user_pass, email, phone, is_active)" + "values($1, $2, $3, $4, $5, $6) RETURNING id";
+      await pg_client.query(queryToDo, obj_to_arr)
         .then(async (result) => {
           console.log("/users/register data is send postgreSql :", result.rows[0].id);
           if (result.rowCount === 1) {
@@ -152,7 +150,7 @@ const usersRegisterPatch = async (req, res) => {
   const incoming_obj = req.body;  // update user data
   const { refreshToken } = req.body;
   let userId = req.userId;
-  console.log("incomig post data :", incoming_obj);
+  console.log("incomig update data :", incoming_obj);
 
   const db_obj = {
     user_title: incoming_obj.user_title,

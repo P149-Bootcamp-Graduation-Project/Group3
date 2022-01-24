@@ -22,8 +22,7 @@ const temperatureGet = async (req, res) => {
         res.status(200).send(res_rd);
       });
     }
-  })
-  .catch((err) => {
+  }).catch((err) => {
     console.log(err);
     res.send("user not found");
     res.end();

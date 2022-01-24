@@ -1,5 +1,6 @@
 const { pg_client } = require("../../adapters/database/postgresql");
 const { rd_client } = require("../../adapters/database/redis");
+const { errToPostLogApi } = require("../../adapters/internal/err_logger");
 
 
 const classesGet = async (req, res) => {
@@ -31,6 +32,22 @@ const classesGet = async (req, res) => {
       console.log(err);
       res.send("user not found");
       res.end();
+      const errData = {
+        flag_type: 1,
+        req_src: "reader-api",
+        req_path: "/",
+        req_file: "classes.js",
+        req_line: 31,
+        req_func: "classesGetGet",
+        req_type: "Controller",
+        req_raw: req.body,
+        content_err: err,
+        content_message: err.message,
+        is_solved: 0,
+        is_notified: 0,
+        is_assgined: "name",
+      };
+      errToPostLogApi(errData);
     });
 
 };
@@ -90,6 +107,22 @@ const classesPost = async (req, res) => {
         .catch((err) => {
           console.log("/class data is pqSQL send error : ", err);
           res.status(500).send(err);
+          const errData = {
+            flag_type: 1,
+            req_src: "reader-api",
+            req_path: "/",
+            req_file: "classes.js",
+            req_line: 107,
+            req_func: "classesGetPost",
+            req_type: "Controller",
+            req_raw: req.body,
+            content_err: err,
+            content_message: err.message,
+            is_solved: 0,
+            is_notified: 0,
+            is_assgined: "name",
+          };
+          errToPostLogApi(errData);
         });
     }
   });
@@ -160,6 +193,22 @@ const classesPatch = async (req, res) => {
         })
         .catch((err) => {
           res.status(500).send("class is not update:" + err);
+          const errData = {
+            flag_type: 1,
+            req_src: "reader-api",
+            req_path: "/",
+            req_file: "classes.js",
+            req_line: 194,
+            req_func: "classesGetPatch",
+            req_type: "Controller",
+            req_raw: req.body,
+            content_err: err,
+            content_message: err.message,
+            is_solved: 0,
+            is_notified: 0,
+            is_assgined: "name",
+          };
+          errToPostLogApi(errData);
         });
     }
   });

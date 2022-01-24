@@ -1,4 +1,5 @@
 const { mongo_client } = require("../../adapters/database/mongodb");
+const { errToPostLogApi } = require("../../adapters/internal/err_logger");
 
 const db = mongo_client.db("group2");
 
@@ -52,6 +53,23 @@ const errlogGet = async (req, res) => {
       console.log(err);
       res.send("user not found");
       res.end();
+
+      const errData = {
+        flag_type: 1,
+        req_src: "reader-api",
+        req_path: "/",
+        req_file: "errlog.js",
+        req_line: 57,
+        req_func: "errlogGet",
+        req_type: "Controller",
+        req_raw: req.body,
+        content_err: err,
+        content_message: err.message,
+        is_solved: 0,
+        is_notified: 0,
+        is_assgined: "name",
+      };
+      errToPostLogApi(errData);
     });
 };
 
@@ -87,6 +105,22 @@ const errlogPatch = async (req, res) => {
       console.log(err);
       res.send("user not found");
       res.end();
+      const errData = {
+        flag_type: 1,
+        req_src: "reader-api",
+        req_path: "/",
+        req_file: "errlog.js",
+        req_line: 104,
+        req_func: "errlogPatch",
+        req_type: "Controller",
+        req_raw: req.body,
+        content_err: err,
+        content_message: err.message,
+        is_solved: 0,
+        is_notified: 0,
+        is_assgined: "name",
+      };
+      errToPostLogApi(errData)
     });
 
 };

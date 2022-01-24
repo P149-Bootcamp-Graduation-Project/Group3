@@ -3,12 +3,14 @@ const { rd_client } = require("../../adapters/database/redis");
 const { userDelete, isExistUser } = require("./users-register-functs");
 const { signAccessToken, signRefreshToken } = require("../../middleware/authentication");
 
+const { errToPostLogApi } = require("../../adapters/internal/err_logger");
+
 const usersRegisterGet = async (req, res) => {
   // the token is if  find in redis token list  then gets all users.
   // If the token is invalid, the middleware terminates the request.
 
   const { refreshToken } = req.body;
-  let userId = req.userId;  // from middleware
+  let userId = req.userId; // from middleware
   console.log("req.userId: ", userId);
 
   await rd_client
@@ -33,6 +35,22 @@ const usersRegisterGet = async (req, res) => {
       console.log(err);
       res.send("user not found");
       res.end();
+      const errData = {
+        flag_type: 1,
+        req_src: "reader-api",
+        req_path: "/",
+        req_file: "users-register.js",
+        req_line: 34,
+        req_func: "usersRegisterGet",
+        req_type: "Controller",
+        req_raw: req.body,
+        content_err: err,
+        content_message: err.message,
+        is_solved: 0,
+        is_notified: 0,
+        is_assgined: "name",
+      };
+      errToPostLogApi(errData);
     });
 
   // res.send("method get from /users/register index ...");
@@ -82,13 +100,15 @@ const usersRegisterPost = async (req, res) => {
       });
       res.end();
     } else {
-      let queryToDo ="insert into group2.users (user_title, user_name, user_pass, email, phone, is_active)" + "values($1, $2, $3, $4, $5, $6) RETURNING id";
-      await pg_client.query(queryToDo, obj_to_arr)
+      let queryToDo =
+        "insert into group2.users (user_title, user_name, user_pass, email, phone, is_active)" + "values($1, $2, $3, $4, $5, $6) RETURNING id";
+      await pg_client
+        .query(queryToDo, obj_to_arr)
         .then(async (result) => {
           console.log("/users/register data is send postgreSql :", result.rows[0].id);
           if (result.rowCount === 1) {
-            const accessToken = await signAccessToken(result.rows[0].id, db_obj );
-            const refreshToken = await signRefreshToken(result.rows[0].id,db_obj );
+            const accessToken = await signAccessToken(result.rows[0].id, db_obj);
+            const refreshToken = await signRefreshToken(result.rows[0].id, db_obj);
             res.status(200).send({
               accessToken,
               refreshToken,
@@ -98,6 +118,22 @@ const usersRegisterPost = async (req, res) => {
         .catch((err) => {
           console.log("/users/register data is pqSQL send error : ", err);
           res.status(500).send(err);
+          const errData = {
+            flag_type: 1,
+            req_src: "reader-api",
+            req_path: "/",
+            req_file: "users-register.js",
+            req_line: 118,
+            req_func: "usersRegisterPost",
+            req_type: "Controller",
+            req_raw: req.body,
+            content_err: err,
+            content_message: err.message,
+            is_solved: 0,
+            is_notified: 0,
+            is_assgined: "name",
+          };
+          errToPostLogApi(errData);
         });
     }
   });
@@ -119,10 +155,15 @@ const usersRegisterDelete = async (req, res) => {
     let rd_token = JSON.parse(rd_res);
     // the token is if  find in redis token list  then delete user.
     if (rd_token.token != null && rd_token.token == refreshToken) {
-      let queryToDo = "select group2.users.email, group2.users.user_pass from group2.users where user_pass='" +
-        incoming_obj.user_pass +"' and email='" + incoming_obj.email + "'";
+      let queryToDo =
+        "select group2.users.email, group2.users.user_pass from group2.users where user_pass='" +
+        incoming_obj.user_pass +
+        "' and email='" +
+        incoming_obj.email +
+        "'";
 
-      await pg_client.query(queryToDo)  //is exist user
+      await pg_client
+        .query(queryToDo) //is exist user
         .then(async (result) => {
           console.log("/users/register delete data is ok :", result);
 
@@ -138,6 +179,22 @@ const usersRegisterDelete = async (req, res) => {
         .catch((err) => {
           console.log("/users/register error : ", err);
           res.status(500).send(err);
+          const errData = {
+            flag_type: 1,
+            req_src: "reader-api",
+            req_path: "/",
+            req_file: "users-register.js",
+            req_line: 179,
+            req_func: "usersRegisterDelete",
+            req_type: "Controller",
+            req_raw: req.body,
+            content_err: err,
+            content_message: err.message,
+            is_solved: 0,
+            is_notified: 0,
+            is_assgined: "name",
+          };
+          errToPostLogApi(errData);
         });
     }
   });
@@ -147,7 +204,7 @@ const usersRegisterDelete = async (req, res) => {
 const usersRegisterPatch = async (req, res) => {
   // the token is if  find in redis token list  then update user.
   // If the token is invalid, the middleware terminates the request.
-  const incoming_obj = req.body;  // update user data
+  const incoming_obj = req.body; // update user data
   const { refreshToken } = req.body;
   let userId = req.userId;
   console.log("incomig update data :", incoming_obj);
@@ -184,6 +241,22 @@ const usersRegisterPatch = async (req, res) => {
         })
         .catch((err) => {
           res.status(500).send("user is not update:" + err);
+          const errData = {
+            flag_type: 1,
+            req_src: "reader-api",
+            req_path: "/",
+            req_file: "users-register.js",
+            req_line: 242,
+            req_func: "usersRegisterPatch",
+            req_type: "Controller",
+            req_raw: req.body,
+            content_err: err,
+            content_message: err.message,
+            is_solved: 0,
+            is_notified: 0,
+            is_assgined: "name",
+          };
+          errToPostLogApi(errData);
         });
     }
   });

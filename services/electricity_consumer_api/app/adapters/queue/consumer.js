@@ -31,7 +31,7 @@ exports.consumerOn = async () => {
                         RETURNING id,school_id,class_id,sensor_id,sensor_data,read_at,created_at`)
             .then((result)=>{
                 // rd_client.set(`group2_power_${result.rows[0].id}`,JSON.stringify(result.rows[0]))
-                rd_client.LPUSH('power-group2',JSON.stringify(db_obj))
+                rd_client.LPUSH('power-group2',JSON.stringify(result.rows[0]))
                 .then((message)=>{
                     console.log("keys: ",message)
                 }).catch((err)=>{

@@ -5,7 +5,7 @@ const options = {
   method: "POST",
   hostname: "127.0.0.1",
   port: 9467,
-  path: "/errlogs",
+  path: "/",
   headers: {
     "Content-Type": "application/json",
   },

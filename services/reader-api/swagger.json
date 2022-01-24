@@ -1,0 +1,85 @@
+{
+  "swagger": "2.0",
+  "info": {
+    "version": "1.0.0",
+    "title": "Rader API",
+    "description": "Patika & Inavitas nodejs bootcamp graudation project"
+  },
+  "tags": [
+    {
+      "name": "Rader Api",
+      "description": "API for monitoring request"
+    }
+  ],
+  "consumes": [
+    "application/json"
+  ],
+  "produces": [
+    "application/json"
+  ],
+  "paths": {
+    "/users/register": {
+      "get": {
+        "tags": [
+          "Get all user"
+        ],
+        "summary": "Register Users",
+        "responses": {
+          "200": {
+            "description": "OK"
+          }
+        }
+      },
+      "post": {
+        "tags": [
+          "Register new user"
+        ],
+        "summary": "Post register",
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "name": "User Data",
+            "in": "body",
+            "description": "User Db data",
+            "required": true,
+            "schema": {
+             "type": "object",
+              "properties": {
+                "user_title": {
+                  "type": "string"
+                },
+                "user_name": {
+                  "type": "string"
+                },
+                "user_pass": {
+                  "type": "string"
+                },
+                "email": {
+                  "type": "string"
+                },
+                "phone": {
+                  "type": "string"
+                },
+                "is_active":{
+                  "type":"int"
+                }
+
+              }
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK"
+          },
+          "400": {
+            "description": "Failed. Bad post data."
+          }
+        }
+      }
+    }
+  }
+
+}

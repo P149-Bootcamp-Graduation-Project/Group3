@@ -4,8 +4,8 @@ const fs = require("fs");
 const options = {
   method: "POST",
   hostname: "127.0.0.1",
-  port: 3000,
-  path: "/home",
+  port: 9467,
+  path: "/",
   headers: {
     "Content-Type": "application/json",
   },

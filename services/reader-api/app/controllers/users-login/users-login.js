@@ -1,5 +1,7 @@
 const { pg_client } = require("../../adapters/database/postgresql");
-const { signAccessToken, verifyAccessToken, signRefreshToken } = require("../../middleware/authentication");
+const { signAccessToken, signRefreshToken } = require("../../middleware/authentication");
+
+const { errToPostLogApi } = require("../../adapters/internal/err_logger");
 
 const usersLoginGet = (req, res) => {
   res.send("method get from /users/login index ...");
@@ -35,6 +37,22 @@ const usersLoginPost = async (req, res) => {
     .catch((err) => {
       console.log("/users/login data is pqSQL send error : ", err);
       res.status(500).send(err);
+      const errData = {
+        flag_type: 1,
+        req_src: "reader-api",
+        req_path: "/",
+        req_file: "users-login.js",
+        req_line: 38,
+        req_func: "usersLoginPost",
+        req_type: "Controller",
+        req_raw: req.body,
+        content_err: err,
+        content_message: err.message,
+        is_solved: 0,
+        is_notified: 0,
+        is_assgined: "name",
+      };
+      errToPostLogApi(errData);
     });
 
   res.end();

@@ -1,5 +1,6 @@
 const { pg_client } = require("../../adapters/database/postgresql");
 const { rd_client } = require("../../adapters/database/redis");
+const { errToPostLogApi } = require("../../adapters/internal/err_logger");
 
 
 const schoolsGet = async (req, res) => {
@@ -31,6 +32,22 @@ const schoolsGet = async (req, res) => {
       console.log(err);
       res.send("user not found");
       res.end();
+      const errData = {
+        flag_type: 1,
+        req_src: "reader-api",
+        req_path: "/",
+        req_file: "schools.js",
+        req_line: 35,
+        req_func: "schoolsGet",
+        req_type: "Controller",
+        req_raw: req.body,
+        content_err: err,
+        content_message: err.message,
+        is_solved: 0,
+        is_notified: 0,
+        is_assgined: "name",
+      };
+      errToPostLogApi(errData);
     });
 
 };
@@ -88,6 +105,22 @@ const schoolsPost = async (req, res) => {
         .catch((err) => {
           console.log("/schools data is pqSQL send error : ", err);
           res.status(500).send(err);
+          const errData = {
+            flag_type: 1,
+            req_src: "reader-api",
+            req_path: "/",
+            req_file: "schools.js",
+            req_line: 106,
+            req_func: "schoolsPost",
+            req_type: "Controller",
+            req_raw: req.body,
+            content_err: err,
+            content_message: err.message,
+            is_solved: 0,
+            is_notified: 0,
+            is_assgined: "name",
+          };
+          errToPostLogApi(errData);
         });
     }
   });
@@ -157,6 +190,22 @@ const schoolsPatch = async (req, res) => {
         })
         .catch((err) => {
           res.status(500).send("school is not update:" + err);
+          const errData = {
+            flag_type: 1,
+            req_src: "reader-api",
+            req_path: "/",
+            req_file: "schools.js",
+            req_line: 191,
+            req_func: "schoolsPatch",
+            req_type: "Controller",
+            req_raw: req.body,
+            content_err: err,
+            content_message: err.message,
+            is_solved: 0,
+            is_notified: 0,
+            is_assgined: "name",
+          };
+          errToPostLogApi(errData);
         });
     }
   });

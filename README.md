@@ -67,7 +67,7 @@ To run data generators
 
 **Server:** Node, Express   
 **Databases:** PostgreSql (for main database), MongoDb (for error logs), Redis (for cache)  
-**Other:** Docker, Kafka (for queue), Swagger (for Documentation)
+**Other:** Docker, Kafka (for queue), Swagger (for Documentation), jwt (for user auth)
 
 
 

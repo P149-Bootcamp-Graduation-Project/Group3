@@ -13,7 +13,7 @@ const { verifyRefreshToken } = require("../middleware/authentication");
  const {temperatureGet}=require("../controllers/temperature/temperature");
  const {airGet}=require("../controllers/air/air");
  const {powerGet}=require("../controllers/electricity/electricity");
- const {errlogGet}=require("../controllers/errlog/errlog");
+ const {errlogGet,errlogPatch}=require("../controllers/errlog/errlog");
 
 const router = express.Router();
 
@@ -56,7 +56,9 @@ router.route("/temperature").get(verifyRefreshToken,temperatureGet);
 router.route("/airquality").get(verifyRefreshToken,airGet);
 router.route("/electricity").get(verifyRefreshToken,powerGet);
 
-router.route("/errlog").get(verifyRefreshToken,errlogGet);
+router.route("/errlog")
+    .get(verifyRefreshToken,errlogGet)
+    .patch(verifyRefreshToken, errlogPatch);
 
 
 module.exports = {

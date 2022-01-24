@@ -47,9 +47,12 @@ To run data generators
 
 ## Authors
 
-- [@İlyas Yağcıoğlu](https://github.com/ilyas9461)
-- [@Oğuzhan Eyerci](https://github.com/oguzeyerci)
-- [@Atakan Dönmez](https://github.com/atakandnmz)
+- [@İlyas Yağcıoğlu](https://github.com/ilyas9461) 
+    - (Air Producer, Temperature Producer, Electricity Producer, Reader API)
+- [@Oğuzhan Eyerci](https://github.com/oguzeyerci) 
+    - (Air Consumer, Temperature Consumer, Electricity Consumer, Error Log API )
+- [@Atakan Dönmez](https://github.com/atakandnmz) 
+    - (Air Consumer, Temperature Consumer, Electricity Consumer)
 
 ## Acknowledgements
 

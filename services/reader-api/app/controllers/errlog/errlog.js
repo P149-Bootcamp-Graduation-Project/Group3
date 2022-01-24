@@ -3,7 +3,7 @@ const { mongo_client } = require("../../adapters/database/mongodb");
 const db = mongo_client.db("group2");
 
 const errlogGet = async (req, res) => {
-  // the token is if  find in redis token list  then gets temperature data from redis db.
+  // the token is if  find in redis token list  then gets error logs data from mongo db.
   // If the token is invalid, the middleware terminates the request.
   /*
     const errData = {
